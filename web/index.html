@@ -56,7 +56,7 @@ let calendarMonth=null,calendarSelected=null,formReportedAt=null,renderedDay=nul
 let page=['big','small','compare'].includes(location.hash.slice(1))?location.hash.slice(1):'big';
 let state={schema_version:2,events:[]}, mode=window.LOCAL_CONFIG?'local':'offline', observer='未设置', selectedCat='待整理', selectedManual=false, pendingProposal=null, cloud=null, session=null, syncing=false, drafts={}, storageReady=true, lastSavedId=null;
 function loadJSON(k,f){try{return JSON.parse(localStorage.getItem(k))||f}catch{return f}}
-observer=loadJSON(ROOTKEY+':observer','未设置');
+observer=loadJSON(ROOTKEY+':observer','爸爸');
 const embeddedCloud=window.GROWTH_CONFIG||{};
 const savedCloud=loadJSON(ROOTKEY+':cloud',{});
 const hasCloudConfig=c=>c?.url&&c?.key&&c?.familyId;
