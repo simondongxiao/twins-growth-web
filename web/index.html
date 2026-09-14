@@ -338,6 +338,7 @@ submitNote=async function(ev){
 const legacyRecord23=recordCard;
 recordCard=function(e,withdrawn=false){
  let html=legacyRecord23(e,withdrawn);let extra='';
+ if(e.kind==='baseline'||e.kind==='proposal'||e.kind==='profile'&&(!e.profile_type||e.profile_type==='birth_config'))html=html.replace(`<span>${esc(shortTime(e.created_at))} 记录</span>`,'');
  const typeLabel={baseline:'历史回顾 · 发生时间未知',proposal:'候选计划 · 尚未确认实施',profile:'家庭资料',plan:'家长已确认计划'}[e.kind];
  if(typeLabel)html=html.replace('<p>',`<div class="meta">${esc(typeLabel)}</div><p>`);
  if(e.attribution){
