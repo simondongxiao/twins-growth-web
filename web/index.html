@@ -57,8 +57,12 @@ let page=['big','small','compare'].includes(location.hash.slice(1))?location.has
 let state={schema_version:2,events:[]}, mode=window.LOCAL_CONFIG?'local':'offline', observer='未设置', selectedCat='待整理', selectedManual=false, pendingProposal=null, cloud=null, session=null, syncing=false, drafts={}, storageReady=true, lastSavedId=null;
 function loadJSON(k,f){try{return JSON.parse(localStorage.getItem(k))||f}catch{return f}}
 observer=loadJSON(ROOTKEY+':observer','未设置');
-cloud=loadJSON(ROOTKEY+':cloud',window.GROWTH_CONFIG||{});
-if(!window.LOCAL_CONFIG && cloud?.url&&cloud?.key&&cloud?.familyId && !loadJSON(ROOTKEY+':forceOffline',false))mode='cloud';
+const embeddedCloud=window.GROWTH_CONFIG||{};
+const savedCloud=loadJSON(ROOTKEY+':cloud',{});
+const hasCloudConfig=c=>c?.url&&c?.key&&c?.familyId;
+cloud=hasCloudConfig(savedCloud)?savedCloud:embeddedCloud;
+const legacyOffline=loadJSON(ROOTKEY+':forceOffline',false);
+if(!window.LOCAL_CONFIG && hasCloudConfig(cloud) && !(legacyOffline&&hasCloudConfig(savedCloud)))mode='cloud';
 try{session=JSON.parse(sessionStorage.getItem(ROOTKEY+':session')||localStorage.getItem(ROOTKEY+':rememberedSession')||'null')}catch{}
 function key(){return ROOTKEY+(mode==='cloud'?':family:'+cloud.familyId:':offline')}
 function persist(doc=state){try{localStorage.setItem(key(),JSON.stringify(doc));storageReady=true}catch{storageReady=false;throw Error('浏览器无法保存，请导出备份或使用本地服务；本次未确认保存。')}}
